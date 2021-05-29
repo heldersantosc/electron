@@ -1,0 +1,14 @@
+{
+  "name": "avancando-com-electron",
+  "version": "1.0.0",
+  "description": "Curso avançado de electron",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Helder",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^13.0.1"
+  }
+}
