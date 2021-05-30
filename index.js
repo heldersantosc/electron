@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, Menu, Tray } = require("electron");
 const url = require("url");
 const path = require("path");
 
@@ -7,6 +7,8 @@ if (process.env.NODE_ENV === "development") {
 }
 
 let mainWindow;
+let iconPath = path.join(__dirname, "inbox-tray.png");
+let appTray = null;
 
 function createWindows() {
   mainWindow = new BrowserWindow({
@@ -30,5 +32,49 @@ function createWindows() {
 
   mainWindow.on("maximize", () => console.log("Maximizado"));
 }
-
 app.on("ready", createWindows);
+
+app.whenReady().then(() => {
+  // ----------------------------------------------------------------
+  // criando um icone na bandeja
+  let contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Mostrar aplicativo",
+      click: function () {
+        mainWindow.show();
+      },
+    },
+    {
+      label: "Sair",
+      click: function () {
+        app.isQuiting = true;
+        app.quit();
+      },
+    },
+  ]);
+
+  appTray = new Tray(iconPath);
+  appTray.setToolTip("This is my application.");
+  appTray.setContextMenu(contextMenu);
+
+  appTray.on("click", function () {
+    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+  });
+
+  // deprecated -------------------------
+  // mainWindow.on("show", function () {
+  //   appTray.setHighlightMode("always");
+  // });
+
+  mainWindow.on("minimize", function (e) {
+    e.preventDefault();
+    mainWindow.hide();
+  });
+
+  mainWindow.on("close", function (e) {
+    if (app.isQuiting) {
+      e.preventDefault();
+      mainWindow.hide();
+    }
+  });
+});
