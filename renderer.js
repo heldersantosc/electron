@@ -32,3 +32,19 @@ fullscreen.addEventListener("click", function (e) {
   e.preventDefault();
   mainWindow.setFullScreen(!mainWindow.isFullScreen());
 });
+
+let getgif = document.getElementById("getgif");
+getgif.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  httpRequest = new XMLHttpRequest();
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.status === 200) {
+      let response = JSON.parse(httpRequest.response);
+      let imgUrl = response.data.image_url;
+      document.getElementById("show-gif").innerHTML = `<img src="${imgUrl}">`;
+    }
+  };
+  httpRequest.open("GET", "");
+  httpRequest.send();
+});
