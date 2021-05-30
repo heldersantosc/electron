@@ -1,6 +1,15 @@
-const { app, BrowserWindow, Menu, Tray, globalShortcut } = require("electron");
-const url = require("url");
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  Tray,
+  globalShortcut,
+  // autoUpdater,
+  dialog,
+} = require("electron");
+const { autoUpdater } = require("electron-updater");
 const path = require("path");
+const url = require("url");
 
 if (process.env.NODE_ENV === "development") {
   require("electron-reload")(__dirname); //hot reload
@@ -34,7 +43,6 @@ function createWindows() {
 
   mainWindow.on("maximize", () => console.log("Maximizado"));
 }
-app.on("ready", createWindows);
 
 app.whenReady().then(() => {
   // ----------------------------------------------------------------
@@ -87,4 +95,54 @@ app.whenReady().then(() => {
       mainWindow.hide();
     }
   });
+});
+
+function sendStatusToWindow(text) {
+  const dialogOpts = {
+    type: "info",
+    buttons: ["Ok"],
+    title: "Atualização do aplicativo",
+    message: "Detalhes:",
+    detail: text,
+  };
+
+  dialog.showMessageBox(dialogOpts);
+}
+
+autoUpdater.on("checking-for-update", () => {
+  sendStatusToWindow("Checking for update...");
+});
+
+autoUpdater.on("update-available", (info) => {
+  sendStatusToWindow("Update available.");
+});
+
+autoUpdater.on("update-not-available", (info) => {
+  sendStatusToWindow("Update not available.");
+});
+
+autoUpdater.on("error", (err) => {
+  sendStatusToWindow("Error in auto-updater. " + err);
+});
+
+autoUpdater.on("download-progress", (progressObj) => {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+  log_message = log_message + " - Downloaded " + progressObj.percent + "%";
+  log_message =
+    log_message +
+    " (" +
+    progressObj.transferred +
+    "/" +
+    progressObj.total +
+    ")";
+  sendStatusToWindow(log_message);
+});
+
+autoUpdater.on("update-downloaded", (info) => {
+  sendStatusToWindow("Update downloaded");
+});
+
+app.on("ready", () => {
+  autoUpdater.checkForUpdates();
+  createWindows();
 });

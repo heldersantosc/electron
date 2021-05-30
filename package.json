@@ -12,6 +12,7 @@
   "author": "Helder",
   "license": "ISC",
   "dependencies": {
+    "electron-updater": "^4.3.9",
     "mousetrap": "^1.6.5"
   },
   "devDependencies": {
@@ -23,6 +24,11 @@
   "build": {
     "appId": "com.electron-aula",
     "productName": "Meu Electron",
+    "publish": {
+      "provider": "github",
+      "owner": "heldersantosc",
+      "repo": "electron"
+    },
     "directories": {
       "output": "build"
     },
