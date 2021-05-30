@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray } = require("electron");
+const { app, BrowserWindow, Menu, Tray, globalShortcut } = require("electron");
 const url = require("url");
 const path = require("path");
 
@@ -7,8 +7,10 @@ if (process.env.NODE_ENV === "development") {
 }
 
 let mainWindow;
-let iconPath = path.join(__dirname, "inbox-tray.png");
 let appTray = null;
+let iconPath = path.join(__dirname, "inbox-tray.png");
+
+app.setAppUserModelId("com.electron-aula");
 
 function createWindows() {
   mainWindow = new BrowserWindow({
@@ -59,6 +61,14 @@ app.whenReady().then(() => {
 
   appTray.on("click", function () {
     mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+  });
+
+  globalShortcut.register("CommandOrControl+x", function () {
+    console.log("Atalho de ctrl + x");
+  });
+
+  globalShortcut.register("Alt+a", function () {
+    console.log("Alt + a");
   });
 
   // deprecated -------------------------

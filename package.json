@@ -10,7 +10,8 @@
   "author": "Helder",
   "license": "ISC",
   "dependencies": {
-    "electron": "^13.0.1"
+    "electron": "^13.0.1",
+    "mousetrap": "^1.6.5"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
