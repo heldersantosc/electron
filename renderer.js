@@ -59,7 +59,7 @@ notification.addEventListener("click", function (e) {
   const NOTIFICATION_TITLE = "Basic Notification";
   const NOTIFICATION_BODY = "Notification from the Main process";
 
-  new Notification({
+  new remote.Notification({
     title: NOTIFICATION_TITLE,
     body: NOTIFICATION_BODY,
     icon: iconPath,
