@@ -26,3 +26,9 @@ fechar.addEventListener("click", function (e) {
   e.preventDefault();
   mainWindow.close();
 });
+
+let fullscreen = document.getElementById("fullscreen");
+fullscreen.addEventListener("click", function (e) {
+  e.preventDefault();
+  mainWindow.setFullScreen(!mainWindow.isFullScreen());
+});
